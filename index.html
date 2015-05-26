@@ -500,7 +500,7 @@ $(window).load(function() {
  
  //code copied from https://developer.apple.com/library/safari/documentation/AudioVideo/Conceptual/HTML-canvas-guide/AddingMouseandTouchControlstoCanvas/AddingMouseandTouchControlstoCanvas.html
         var can, ctx, canX, canY, mouseIsDown = 0;
- 
+		var prevCanX,prevCanY,prevDo;
         function init() {
             can = document.getElementById("can");
             ctx = can.getContext("2d");
@@ -560,8 +560,21 @@ $(window).load(function() {
 				//ctx.fillText(str, can.width / 2, can.height / 2, can.width - 10);
 				// plot cursor
 				ctx.fillStyle = "white";
-				ctx.fillRect(canX -5, canY -5, 8, 8);
+				ctx.lineWidth=20;
+				ctx.strokeStyle="white";
+				if(prevDo){
+					var dx=canX-prevCanX,dy=canY-prevCanY;
+					ctx.beginPath();
+					ctx.moveTo(prevCanX-dx/2,prevCanY-dy/2);
+					ctx.lineTo(canX+dx/2,canY+dy/2);
+					ctx.stroke();
+				}else{
+					ctx.fillRect(canX -10, canY -10, 20, 20);
+				}
 			}
+			prevDo=mouseIsDown;
+			prevCanX=canX;
+			prevCanY=canY;
         }
 		function clear2(){
 			ctx.clearRect(0, 0, can.width, can.height);
