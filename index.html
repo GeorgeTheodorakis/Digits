@@ -3,6 +3,9 @@
  body{
 	font-size:100px;
  }
+ p{
+	margin:10px;
+	}
  </style>
 <script src="./ConvNetJS MNIST demo_files/jquery-1.8.3.min.js"></script>
 <script src="./ConvNetJS MNIST demo_files/vis.js"></script>
@@ -579,6 +582,7 @@ $(window).load(function() {
 		function clear2(){
 			ctx.clearRect(0, 0, can.width, can.height);
 			document.getElementById("hi").innerHTML="";
+			document.getElementById("hi2").innerHTML="";
 		}
 		function go2(){
 			var obj = new Float64Array(576);
@@ -607,13 +611,22 @@ $(window).load(function() {
 			thing.depth=1;
 			thing.w=obj;
 			var result = net.forward(thing).w;
+			var string = "";
 			var maxI=0;
-			for(var i = 1; i < 10; i++){
+			for(var i = 0; i < 10; i++){
 				if(result[i]>result[maxI]){
 					maxI=i;
 				}
+				string+="<br>"+i+":"+doThing(result[i]);
 			}
 			document.getElementById("hi").innerHTML=maxI;
+			document.getElementById("hi2").innerHTML=string;
+		}
+		function doThing(num){
+			if(String(num).substring(0,1)!=0){
+				return 0;//num is of form x.xxxe-x
+			}
+			return String(num).substring(0,8);
 		}
     </script>
  
@@ -622,5 +635,6 @@ $(window).load(function() {
     <canvas id="can" height="196" width="196" style="background-color:black">
     </canvas><button onclick="clear2()">Clear</button><button onclick="go2()">Go</button>
 	<p id="hi"></p>
+	<p id="hi2" style="font-size:20px"></p>
 </body>
 </html>
